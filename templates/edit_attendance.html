@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Edit Attendance Record</h2>
+  <form method="post">
+    <input type="text" name="employee_name" value="{{ record.employee_name }}" required>
+    <input type="date" name="attendance_date" value="{{ record.attendance_date }}" required>
+    <select name="status" required>
+      <option value="">Select Status</option>
+      <option {% if record.status == 'Present' %}selected{% endif %}>Present</option>
+      <option {% if record.status == 'Absent' %}selected{% endif %}>Absent</option>
+      <option {% if record.status == 'Late' %}selected{% endif %}>Late</option>
+      <option {% if record.status == 'Leave' %}selected{% endif %}>Leave</option>
+    </select>
+    <input type="text" name="department" value="{{ record.department }}" required>
+    <textarea name="notes">{{ record.notes }}</textarea>
+    <button type="submit">Update Record</button>
+  </form>
+{% endblock %}

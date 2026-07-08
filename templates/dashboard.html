@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Dashboard</h2>
+  <p class="muted">Welcome, {{ session.get('username') }}.</p>
+
+  <div class="card">
+    <h3>Record Attendance</h3>
+    <form action="{{ url_for('add_attendance') }}" method="post">
+      <input type="text" name="employee_name" placeholder="Employee Name" required>
+      <input type="date" name="attendance_date" required>
+      <select name="status" required>
+        <option value="">Select Status</option>
+        <option>Present</option>
+        <option>Absent</option>
+        <option>Late</option>
+        <option>Leave</option>
+      </select>
+      <input type="text" name="department" placeholder="Department" required>
+      <textarea name="notes" placeholder="Notes"></textarea>
+      <button type="submit">Save Attendance</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h3>Attendance Records</h3>
+    {% if attendance_records %}
+      <table>
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Department</th>
+            <th>Notes</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for record in attendance_records %}
+            <tr>
+              <td>{{ record.employee_name }}</td>
+              <td>{{ record.attendance_date }}</td>
+              <td>{{ record.status }}</td>
+              <td>{{ record.department }}</td>
+              <td>{{ record.notes }}</td>
+              <td>
+                <a href="{{ url_for('edit_attendance', record_id=record.id) }}">Edit</a> |
+                <form style="display:inline" action="{{ url_for('delete_attendance', record_id=record.id) }}" method="post">
+                  <button type="submit">Delete</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">No attendance records yet.</p>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3>Help Requests</h3>
+    {% if help_requests %}
+      <ul>
+        {% for request_item in help_requests %}
+          <li><strong>{{ request_item.subject }}</strong> - {{ request_item.message }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">No help requests yet.</p>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Attendance System</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 0; background: #f4f7fb; color: #223; }
+      nav { background: #1f4e79; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+      nav a { color: white; text-decoration: none; margin-left: 1rem; }
+      .container { max-width: 980px; margin: 2rem auto; padding: 1rem 2rem; background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+      .flash { padding: 0.75rem 1rem; margin-bottom: 1rem; border-radius: 6px; }
+      .flash.success { background: #e6f7ed; color: #1f6f3d; }
+      .flash.danger { background: #fde8e8; color: #a42828; }
+      .flash.warning { background: #fff7dc; color: #8a6d1f; }
+      .flash.info { background: #eaf4ff; color: #245b8d; }
+      form { display: grid; gap: 0.75rem; }
+      input, select, textarea, button { padding: 0.7rem; font-size: 1rem; border-radius: 6px; border: 1px solid #ccd; }
+      button { background: #1f4e79; color: white; cursor: pointer; }
+      .grid { display: grid; gap: 1rem; }
+      .card { border: 1px solid #e0e6ed; padding: 1rem; border-radius: 8px; }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { padding: 0.7rem; border-bottom: 1px solid #eee; text-align: left; }
+      .muted { color: #666; }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <strong>Attendance System</strong>
+      <div>
+        {% if session.get('user_id') %}
+          <a href="{{ url_for('dashboard') }}">Dashboard</a>
+          <a href="{{ url_for('help_desk') }}">Help Desk</a>
+          <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+          <a href="{{ url_for('index') }}">Home</a>
+          <a href="{{ url_for('login') }}">Login</a>
+          <a href="{{ url_for('register') }}">Register</a>
+        {% endif %}
+      </div>
+    </nav>
+
+    <div class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </div>
+  </body>
+</html>
